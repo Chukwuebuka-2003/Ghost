@@ -5,20 +5,35 @@ WORKDIR /app
 # Install Ghost CLI globally
 RUN npm install -g ghost-cli@latest
 
-# Copy package files first for better caching
-COPY package.json yarn.lock ./
+# Install system dependencies
+RUN apk add --no-cache \
+    python3 \
+    make \
+    g++ \
+    sqlite \
+    sqlite-dev \
+    libc6-compat
 
-# Install dependencies (production only)
-RUN yarn install --production --frozen-lockfile
+# Copy package files
+COPY package*.json ./
+
+# Install ALL dependencies (not just production) for build
+RUN npm install
 
 # Copy the rest of the app
 COPY . .
 
-# Create content directory for uploads
-RUN mkdir -p content/images content/logs content/data content/settings content/themes content/adapters
+# Build Ghost (if needed)
+RUN npm run build || true
 
-# Expose Ghost's default port
+# Create content directories
+RUN mkdir -p content/images content/logs content/data content/settings content/themes
+
+# Expose port
 EXPOSE 2368
 
+# Set environment
+ENV NODE_ENV=production
+
 # Start Ghost
-CMD ["ghost", "start", "--no-prompt"]
+CMD ["npm", "start"]
