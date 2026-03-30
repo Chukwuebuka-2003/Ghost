@@ -1,34 +1,6 @@
-node_modules
+# Ignore EVERYTHING - we're using the official Ghost image
+*
 
-.nxcache
-.nx
-
-**/*.log
-
-build
-dist
-
-coverage
-
-.eslintcache
-
-test-results
-
-tsconfig.tsbuildinfo
-
-Dockerfile
-.dockerignore
-
-.git
-.vscode
-.editorconfig
-compose.yml
-
-docker
-!docker/**/*.entrypoint.sh
-!docker/**/*entrypoint.sh
-
-ghost/core/core/built/admin
-
-# Ignore local config files (.json and .jsonc)
-ghost/core/config.local.json*
+# Allow ONLY what Railway needs to build
+!Dockerfile
+!railway.json
