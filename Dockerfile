@@ -1,4 +1,4 @@
-FROM image: ghost:6-alpine
+FROM ghost:6-alpine
 
 # Ghost runs on port 2368
 EXPOSE 2368
